@@ -1,5 +1,5 @@
 describe user('steam') do
-  its('home') { should eq '/home/steam' }
+  its('home') { should eq '/opt/steam' }
   its('shell') { should eq '/bin/bash' }
 end
 
