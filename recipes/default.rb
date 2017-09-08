@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 ark_base_dir = node['ark']['install_dir'] + '/' + node['ark']['appid']
-ark_config_dir = ark_base_dir + '/ShooterGame/Saved/Config/LinuxNoEditor'
+ark_config_dir = ark_base_dir + '/ShooterGame/Saved/Config/LinuxServer'
 gameusersettings_ini = ark_config_dir + '/GameUserSettings.ini'
 # ark_exec = ark_base_dir + '/ShooterGame/Binaries/Linux' + 'ShooterGameServer'
 

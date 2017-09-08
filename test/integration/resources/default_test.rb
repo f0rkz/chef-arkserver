@@ -16,7 +16,7 @@ describe service('ark') do
   it { should be_running }
 end
 
-ark_config = '/opt/arkserver/376030/ShooterGame/Saved/Config/LinuxNoEditor/GameUserSettings.ini'
+ark_config = '/opt/arkserver/376030/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini'
 
 describe file(ark_config) do
   it { should exist }
