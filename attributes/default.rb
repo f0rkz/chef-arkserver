@@ -34,6 +34,7 @@ default['ark']['gameserver']['configuration'] = {
   ListenPort: 7777,
   QueryPort: 27015,
   EnableRcon: true,
+  battleeye: true,
   ServerSettings: {
     # Enables 3rd Person view [0, 1]
     allowThirdPersonPlayer: 0,
