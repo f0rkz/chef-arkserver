@@ -87,7 +87,7 @@ template gameusersettings_ini do
   source 'GameUserSettings.ini.erb'
   owner node['steam']['user']
   group node['steam']['user']
-  mode '0744'
+  mode '0400'
   notifies :start, 'service[ark]', :immediately
 end
 
