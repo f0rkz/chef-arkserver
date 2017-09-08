@@ -1,4 +1,5 @@
 # Ark: Survival Evolved Chef Cookbook
+[![Build Status](https://travis-ci.org/f0rkz/chef-arkserver.svg)](https://travis-ci.org/f0rkz/chef-arkserver)
 
 This cookbook will install and configure an Ark: Survival Evolved dedicated
 server. Utilize the following README for more information on how to utilize this
