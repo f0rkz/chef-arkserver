@@ -36,23 +36,24 @@ default['ark']['gameserver']['configuration'] = {
   EnableRcon: true,
   battleeye: true,
   ServerSettings: {
-    # Enables 3rd Person view [0, 1]
-    allowThirdPersonPlayer: 0,
+    # Enables 3rd Person view
+    allowThirdPersonPlayer: 'False',
 
-    # If set to 1, allows building in caves when PvE mode is also enabled. [0, 1]
-    AllowCaveBuildingPvE: 0,
+    # If set to 1, allows building in caves when PvE mode is also enabled.
+    # This seems to be a dead option
+    AllowCaveBuildingPvE: 'False',
 
-    # Players will always get notified if someone joins the server [0, 1]
-    alwaysNotifyPlayerJoined: 0,
+    # Players will always get notified if someone joins the server
+    alwaysNotifyPlayerJoined: 'False',
 
-    # Players will always get notified if someone leaves the server	[0, 1]
-    alwaysNotifyPlayerLeft: 0,
+    # Players will always get notified if someone leaves the server
+    alwaysNotifyPlayerLeft: 'False',
 
-    # Allows flyers to pick up players and dinos [0, 1]
-    bAllowFlyerCarryPvE: 0,
+    # Allows flyers to pick up players and dinos
+    bAllowFlyerCarryPvE: 'False',
 
-    # Disable the gradual (7 days) decay of player structures	[0, 1]
-    bDisableStructureDecayPvE: 0,
+    # Disable the gradual (7 days) decay of player structures
+    bDisableStructureDecayPvE: 'False',
 
     # Specifies the scaling factor for the passage of time in the ARK,
     # controlling how often day changes to night and night changes to day.
@@ -106,7 +107,7 @@ default['ark']['gameserver']['configuration'] = {
     DinoResistanceMultiplier: '1.00000',
 
     # Voice chat turns global
-    globalVoiceChat: 0,
+    globalVoiceChat: 'False',
 
     # Specifies the scaling factor for yields from all harvesting activities
     # (chopping down trees, picking berries, carving carcasses, mining rocks,
@@ -126,16 +127,16 @@ default['ark']['gameserver']['configuration'] = {
     MaxStructuresInRange: 6700,
 
     # Disables downloading characters from other servers
-    noTributeDownloads: 0,
+    noTributeDownloads: 'False',
 
     # Prevents the download of survivors
-    PreventDownloadSurvivors: 0,
+    PreventDownloadSurvivors: 'False',
 
     # Prevents the download of items
-    PreventDownloadItems: 0,
+    PreventDownloadItems: 'False',
 
     # Prevents the download of dinos
-    PreventDownloadDinos: 0,
+    PreventDownloadDinos: 'False',
 
     # Specifies the scaling factor for player characters\' food consumption.
     # Higher values increase food consumption (player characters get hungry
@@ -170,7 +171,7 @@ default['ark']['gameserver']['configuration'] = {
     PlayerResistanceMultiplier: '1.00000',
 
     # Only players near each other can see their chat messages
-    proximityChat: 0,
+    proximityChat: 'False',
 
     # Defines the distance where there are no resources respawning when being
     # close to a player
@@ -190,22 +191,22 @@ default['ark']['gameserver']['configuration'] = {
     ServerAdminPassword: '',
 
     # Shows crosshair
-    ServerCrosshair: 1,
+    ServerCrosshair: 'True',
 
     # HUD always disabled
-    serverForceNoHud: 0,
+    serverForceNoHud: 'False',
 
     # Enables hardcore mode (player characters revert to level 1 upon death)
-    serverHardcore: 0,
+    serverHardcore: 'False',
 
     # If specified, players must provide this password to join the server.
     ServerPassword: '',
 
     # Disables PvP, enables PvE
-    serverPVE: 0,
+    serverPVE: 'False',
 
     # Show each player their own precise position when they view their map
-    ShowMapPlayerLocation: 0,
+    ShowMapPlayerLocation: 'False',
 
     # Specifies the scaling factor for the damage structures deal with their
     # attacks (i.e. spiked walls). The default value 1 provides normal damage.
@@ -240,10 +241,10 @@ default['ark']['gameserver']['configuration'] = {
     XPMultiplier: '1.00000',
 
     # Allows or disallows usage of gamma on PVP servers
-    EnablePVPGamma: 0,
+    EnablePVPGamma: 'False',
 
     # Allows or disallows usage of gamma on PVE servers
-    EnablePVEGamma: 0,
+    EnablePVEGamma: 'False',
 
     # To use non-admin spectator, the server must specify a spectator password.
     # Then any client can use these console commands: requestspectator and
@@ -269,17 +270,17 @@ default['ark']['gameserver']['configuration'] = {
 
     # Activates (true) oder deactivates (false) the structure decay on PVP
     # servers
-    PvPStructureDecay: 0,
+    PvPStructureDecay: 'False',
 
     # Deactivates the unclaiming functions for dinosaurs on PVE servers
-    DisableDinoDecayPvE: 0,
+    DisableDinoDecayPvE: 'False',
 
     # Multiplier value for the unclaiming speed of dinosaurs
     PvEDinoDecayPeriodMultiplier: '1.00000',
 
     # Enables the output of cheat commands that admins used
     # (will be shown in chat)
-    AdminLogging: 0,
+    AdminLogging: 'False',
 
     # Defines the maximum amount of tamed dinos on the island
     MaxTamedDinos: 8000,
@@ -321,14 +322,14 @@ default['ark']['gameserver']['configuration'] = {
     AutoDestroyOldStructuresMultiplier: '0.00000',
 
     # Deactivates the VSync setting (can reduce GPU problems in some cases)
-    bUseVSync: 0,
+    bUseVSync: 'False',
 
     # Defines the maximum number of structures on top of the saddle platform
     MaxPlatformSaddleStructureLimit: 100,
 
     # Wild dinos or dinos without a rider can take damage from defense
     # structures like spikewalls if this setting is activated
-    bPassiveDefensesDamageRiderlessDinos: 1,
+    bPassiveDefensesDamageRiderlessDinos: 'True',
 
     # Under which port RCON should be available?
     RCONPort: 27020,
@@ -342,7 +343,7 @@ default['ark']['gameserver']['configuration'] = {
 
     # Determines if turrets are allowed on moving platforms or not.
     # Yes will prevent it. No will allow it
-    OverrideStructurePlatformPrevention: 0,
+    OverrideStructurePlatformPrevention: 'False',
 
     # Defines the time period of being offline so that a player will be really
     # considered as being offline.
@@ -350,29 +351,29 @@ default['ark']['gameserver']['configuration'] = {
 
     # Determines if dinos of a player/tribe are also protected in the activated
     # offline raid protection
-    bPvPDinoDecay: 1,
+    bPvPDinoDecay: 'True',
 
     # Determines if structures of a player/tribe are also protected in the
     # activated offline raid protection
-    bPvPStructureDecay: 1,
+    bPvPStructureDecay: 'True',
 
     # Deactivates (no) the bonus stats for a dino if you raise the baby by
     # yourself
-    DisableImprintDinoBuff: 1,
+    DisableImprintDinoBuff: 'True',
 
     # Allows everybody to cuddle with the dino baby
-    AllowAnyoneBabyImprintCuddle: 1,
+    AllowAnyoneBabyImprintCuddle: 'True',
 
     # Prevents the building of structures on places which are rich of resources
-    EnableExtraStructurePreventionVolumes: 1,
+    EnableExtraStructurePreventionVolumes: 'True',
 
     # Shows dealt damages in a RPG style
-    ShowFloatingDamageText: 0,
+    ShowFloatingDamageText: 'False',
 
     # If active, it will destroy the pipes automatically after two real-time
     # days, if unconnected to any non-pipe (directly or indirectly) and no
     # allied player is nearby.
-    DestroyUnconnectedWaterPipes: 0,
+    DestroyUnconnectedWaterPipes: 'True',
 
     # Overwrites the difficulty settings
     OverrideOfficialDifficulty: '1.0',
@@ -387,7 +388,7 @@ default['ark']['gameserver']['configuration'] = {
 
     # Use "true" if you want to allow being able to build structures nearby
     # supply drop. "false" will disable it.
-    PvEAllowStructuresAtSupplyDrops: 0,
+    PvEAllowStructuresAtSupplyDrops: 'False',
 
     # a new Wild NPC Stasis Range scaling-for-player-count option to scale
     # server performance for more players
@@ -408,46 +409,46 @@ default['ark']['gameserver']['configuration'] = {
     # Option to auto-destroy claimable decayed dinos on load, rather than have
     # them remain around as claimable.
     # Official PvE servers now have this enabled.
-    AutoDestroyDecayedDinos: 1,
+    AutoDestroyDecayedDinos: 'True',
 
     # Will clamp all spoiling times to the items' maximum spoiling times.
     # Useful if any infinite-spoiling exploits were used on the server and you
     # wish to clean them up. Could potentially cause issues with Mods that
     # alter spoiling time, hence it is an option.
-    ClampItemSpoilingTimes: 0,
+    ClampItemSpoilingTimes: 'False',
 
     # Server custom "HarvestAmountMultiplier" now works as it used to,
     # to bias towards yielding rarer items.
     # This is more costly for server performance, so if you want a more
     # "optimized" server with high HarvestAmountMultiplier
     # (but less rare items), you can launch with "yes" in this setting here.
-    UseOptimizedHarvestingHealth: 1,
+    UseOptimizedHarvestingHealth: 'True',
 
     # Servers can now allow from-the-air Supply Crates to appear on top of
     # Structures, rather than being prevented by Structures.
     # Enabled on Official Servers.
-    AllowCrateSpawnsOnTopOfStructures: 1,
+    AllowCrateSpawnsOnTopOfStructures: 'True',
 
     # Made all Flyers except for Quetz and Wyvern become 'grounded' if you put a
     # C4 on them. To disable this behavior, launch server with "yes"
-    ForceFlyerExplosives: 0,
+    ForceFlyerExplosives: 'False',
 
     # Enables ORP on PVE/PVP servers if set to "yes"
-    PreventOfflinePvP: 1,
+    PreventOfflinePvP: 'True',
 
     # Flyer Nerf (to allow server to recover Stamina when standing on a Flyer,
     # run with "yes")
-    AllowFlyingStaminaRecovery: 1,
+    AllowFlyingStaminaRecovery: 'True',
 
     # Limited one C4 attached per dino, unless you choose "yes" to allow more
     # than one C4
-    AllowMultipleAttachedC4: 1,
+    AllowMultipleAttachedC4: 'True',
 
     # Use this to set how swim speed is multiplied by level spent in oxygen.
     OxygenSwimSpeedStatMultiplier: '1.00',
 
     # When using "yes", you are now able to harvest a slaughtered Ovis.
-    bPvEDisableFriendlyFire: 1,
+    bPvEDisableFriendlyFire: 'True',
 
     # This will force respawns of dinos on servers to prevent certain dino types
     # (like the Basilo and Spino) from becoming depopulated on long running
