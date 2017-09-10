@@ -2,12 +2,15 @@
 <% @node['ark']['gameserver']['configuration']['ServerSettings'].each do |setting, value| -%>
 <%= setting %>=<%= value %>
 <% end -%>
+
 [/script/engine.gamesession]
 MaxPlayers=<%= @node['ark']['gameserver']['configuration']['MaxPlayers'] %>
+
 [SessionSettings]
 <% @node['ark']['gameserver']['configuration']['SessionSettings'].each do |setting, value| -%>
 <%= setting %>=<%= value %>
 <% end -%>
+
 [MessageOfTheDay]
 <% @node['ark']['gameserver']['configuration']['MessageOfTheDay'].each do |setting, value| -%>
 <%= setting %>=<%= value %>
