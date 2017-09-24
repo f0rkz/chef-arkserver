@@ -80,8 +80,8 @@ template '/etc/systemd/system/ark.service' do
   owner 'root'
   group 'root'
   mode '0744'
-  notifies :run, 'execute[reload ark systemd unit]', :immediately
   notifies :enable, 'service[ark]', :immediately
+  notifies :run, 'execute[reload ark systemd unit]', :immediately
   notifies :start, 'service[ark]', :delayed
 end
 
