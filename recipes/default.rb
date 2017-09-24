@@ -81,21 +81,14 @@ template '/etc/systemd/system/ark.service' do
   group 'root'
   mode '0744'
   notifies :run, 'execute[reload ark systemd unit]', :immediately
-  notifies [:enable, :start], 'service[ark]', :delayed
+  notifies :enable, 'service[ark]', :immediately
+  notifies :start, 'service[ark]', :delayed
 end
 
 execute 'reload ark systemd unit' do
   command 'systemctl reload ark'
   action :nothing
 end
-
-# template gameusersettings_ini do
-#   source 'GameUserSettings.ini.erb'
-#   owner node['steam']['user']
-#   group node['steam']['user']
-#   mode '0400'
-#   notifies :start, 'service[ark]', :immediately
-# end
 
 service 'ark' do
   supports status: true
