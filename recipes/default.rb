@@ -80,7 +80,13 @@ template '/etc/systemd/system/ark.service' do
   owner 'root'
   group 'root'
   mode '0744'
-  notifies [:enable, :reload], 'service[ark]', :immediately
+  notifies :run, 'execute[reload ark systemd unit]', :immediately
+  notifies [:enable, :start], 'service[ark]', :delayed
+end
+
+execute 'reload ark systemd unit' do
+  command 'systemctl reload ark'
+  action :nothing
 end
 
 # template gameusersettings_ini do
