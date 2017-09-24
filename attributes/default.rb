@@ -455,15 +455,6 @@ default['ark']['gameserver']['configuration'] = {
     # servers. Specify a value in seconds (86400 means a forced respawn after
     # one day (realtime) for example)
     DayCycServerAutoForceRespawnWildDinosInterval: 86400,
-
-    # Multiplier for breeding time
-    MatingIntervalMultiplier: "1.0",
-
-    # Egg hatching speed multiplier
-    EggHatchSpeedMultiplier: "1.0",
-
-    # Baby maturity multipler
-    BabyMatureSpeedMultiplier: "1.0"
   },
   SessionSettings: {
     # Name of your server
