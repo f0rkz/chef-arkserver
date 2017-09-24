@@ -80,18 +80,18 @@ template '/etc/systemd/system/ark.service' do
   owner 'root'
   group 'root'
   mode '0744'
-  notifies :enable, 'service[ark]', :immediately
+  notifies [:enable, :reload], 'service[ark]', :immediately
 end
 
-template gameusersettings_ini do
-  source 'GameUserSettings.ini.erb'
-  owner node['steam']['user']
-  group node['steam']['user']
-  mode '0400'
-  notifies :start, 'service[ark]', :immediately
-end
+# template gameusersettings_ini do
+#   source 'GameUserSettings.ini.erb'
+#   owner node['steam']['user']
+#   group node['steam']['user']
+#   mode '0400'
+#   notifies :start, 'service[ark]', :immediately
+# end
 
 service 'ark' do
   supports status: true
-  action [:enable]
+  action :nothing
 end

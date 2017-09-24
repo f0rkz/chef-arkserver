@@ -454,7 +454,16 @@ default['ark']['gameserver']['configuration'] = {
     # (like the Basilo and Spino) from becoming depopulated on long running
     # servers. Specify a value in seconds (86400 means a forced respawn after
     # one day (realtime) for example)
-    DayCycServerAutoForceRespawnWildDinosInterval: 86400
+    DayCycServerAutoForceRespawnWildDinosInterval: 86400,
+
+    # Multiplier for breeding time
+    MatingIntervalMultiplier: "1.0",
+
+    # Egg hatching speed multiplier
+    EggHatchSpeedMultiplier: "1.0",
+
+    # Baby maturity multipler
+    BabyMatureSpeedMultiplier: "1.0"
   },
   SessionSettings: {
     # Name of your server

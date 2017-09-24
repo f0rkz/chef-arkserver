@@ -16,15 +16,6 @@ describe service('ark') do
   it { should be_running }
 end
 
-ark_config = '/opt/arkserver/376030/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini'
-
-describe file(ark_config) do
-  it { should exist }
-  it { should be_file }
-  it { should be_owned_by 'steam' }
-  its('group') { should eq 'steam' }
-end
-
 describe command('ps -ef | grep ShooterGameServer') do
   its('exit_status') { should eq 0 }
 end
