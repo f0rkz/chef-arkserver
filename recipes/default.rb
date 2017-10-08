@@ -72,6 +72,13 @@ directory ark_config_dir do
   notifies :run, 'execute[chown config directory]', :immediately
 end
 
+template "#{ark_config_dir}/Game.ini" do
+  source 'Game.ini.erb'
+  owner node['steam']['user']
+  group node['steam']['user']
+  mode '0744'
+end
+
 execute 'chown config directory' do
   command <<-EOF
   chown -R #{node['steam']['user']}:#{node['steam']['user']} #{ark_base_dir}
