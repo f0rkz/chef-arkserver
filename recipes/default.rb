@@ -50,14 +50,15 @@ steamcmd_app 'install ark' do
   action :nothing
 end
 
-execute 'Install ark Steamcmd' do
-  command <<-EOF
-  #{ark_base_dir}/SteamCMDInstall.sh
-  EOF
+bash 'Install ark Steamcmd' do
   user node['steam']['user']
-  group node['steam']['user']
   cwd ark_base_dir
-  action :run
+  code <<-EOH
+  mkdir -p Engine/Binaries/ThirdParty/SteamCMD/Linux
+  cd Engine/Binaries/ThirdParty/SteamCMD/Linux/
+  wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+  tar -xf steamcmd_linux.tar.gz
+  EOH
   not_if { ::File.directory?("#{node['ark']['install_dir']}/Engine/Binaries/ThirdParty/SteamCMD/Linux") }
 end
 
