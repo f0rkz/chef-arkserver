@@ -21,6 +21,7 @@
 
 # lib32gcc1 required for steamcmd api
 package 'lib32gcc1'
+package 'wget'
 
 ark_base_dir = node['ark']['install_dir'] + '/' + node['ark']['appid']
 ark_config_dir = ark_base_dir + '/ShooterGame/Saved/Config/LinuxServer'
