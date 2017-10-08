@@ -52,11 +52,11 @@ end
 
 execute 'Install ark Steamcmd' do
   command <<-EOF
-  #{node['ark']['install_dir']}/SteamCMDInstall.sh
+  #{ark_base_dir}/SteamCMDInstall.sh
   EOF
   user node['steam']['user']
   group node['steam']['user']
-  cwd node['ark']['install_dir']
+  cwd ark_base_dir
   action :run
   not_if { ::File.directory?("#{node['ark']['install_dir']}/Engine/Binaries/ThirdParty/SteamCMD/Linux") }
 end
