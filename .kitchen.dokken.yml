@@ -26,3 +26,9 @@ suites:
 - name: resources
   run_list:
   - recipe[test]
+  attributes:
+    ark:
+      gameserver:
+        configuration:
+          GameSettings:
+            InstalledMods: ['655581765']

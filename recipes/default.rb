@@ -18,6 +18,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+# lib32gcc1 required for steamcmd api
+package 'lib32gcc1'
+
 ark_base_dir = node['ark']['install_dir'] + '/' + node['ark']['appid']
 ark_config_dir = ark_base_dir + '/ShooterGame/Saved/Config/LinuxServer'
 
@@ -46,15 +50,12 @@ steamcmd_app 'install ark' do
   action :nothing
 end
 
-# Update the game files
-if node['ark']['force_update']
-  steamcmd_app 'update ark' do
-    base_game_dir node['ark']['install_dir']
-    user node['steam']['user']
-    group node['steam']['user']
-    appid node['ark']['appid']
-    action :install
-  end
+execute 'Install ark Steamcmd' do
+  command <<-EOF
+  node['ark']['install_dir']/SteamCMDInstall.sh
+  EOF
+  action :run
+  not_if { ::File.directory?("#{node['ark']['install_dir']}/Engine/Binaries/ThirdParty/SteamCMD/Linux") }
 end
 
 directory ark_config_dir do
