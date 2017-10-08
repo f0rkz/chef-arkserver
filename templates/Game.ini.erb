@@ -1,0 +1,6 @@
+<% if @node['ark']['gameserver']['configuration']['GameSettings']['InstalledMods'] -%>
+[ModInstaller]
+  <% @node['ark']['gameserver']['configuration']['GameSettings']['InstalledMods'].each do |mod| -%>
+ModIDS=<%= mod %>
+  <% end -%>
+<% end -%>

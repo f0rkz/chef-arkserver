@@ -465,5 +465,9 @@ default['ark']['gameserver']['configuration'] = {
     Duration: 30,
     # Defines a welcome message
     Message: 'https://github.com/f0rkz/chef-arkserver'
+  },
+  GameSettings: {
+    # Change the InstalledMods section to be an array instead of false
+    InstalledMods: false
   }
 }
