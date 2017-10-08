@@ -20,8 +20,6 @@
 #
 ark_base_dir = node['ark']['install_dir'] + '/' + node['ark']['appid']
 ark_config_dir = ark_base_dir + '/ShooterGame/Saved/Config/LinuxServer'
-gameusersettings_ini = ark_config_dir + '/GameUserSettings.ini'
-# ark_exec = ark_base_dir + '/ShooterGame/Binaries/Linux' + 'ShooterGameServer'
 
 user node['steam']['user'] do
   system true
@@ -81,12 +79,12 @@ template '/etc/systemd/system/ark.service' do
   group 'root'
   mode '0744'
   notifies :enable, 'service[ark]', :immediately
-  notifies :run, 'execute[reload ark systemd unit]', :immediately
+  notifies :run, 'execute[reload systemd]', :delayed
   notifies :start, 'service[ark]', :delayed
 end
 
-execute 'reload ark systemd unit' do
-  command 'systemctl reload ark'
+execute 'reload systemd' do
+  command 'systemctl daemon-reload'
   action :nothing
 end
 
