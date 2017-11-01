@@ -21,10 +21,15 @@
 
 # lib32gcc1 required for steamcmd api
 package 'lib32gcc1'
+package 'git'
 package 'wget'
+# package 'python3'
+# package 'python3-pip'
 
 ark_base_dir = node['ark']['install_dir'] + '/' + node['ark']['appid']
 ark_config_dir = ark_base_dir + '/ShooterGame/Saved/Config/LinuxServer'
+gameusersettings_ini = ark_config_dir + '/GameUserSettings.ini'
+game_ini = ark_config_dir + '/Game.ini'
 
 user node['steam']['user'] do
   system true
@@ -43,6 +48,23 @@ directory node['ark']['install_dir'] do
   notifies :install, 'steamcmd_app[install ark]', :immediately
 end
 
+# Create the ark tools directory
+directory node['ark']['tools_dir'] do
+  owner node['steam']['user']
+  group node['steam']['user']
+  mode '0755'
+  recursive true
+  action :create
+end
+
+# Install the mod downloader tool
+# git "#{node['ark']['tools_dir']}/Ark_Mod_Downloader" do
+#   repository 'https://github.com/f0rkz/Ark_Mod_Downloader.git'
+#   action :sync
+#   user node['steam']['user']
+#   group node['steam']['user']
+# end
+
 steamcmd_app 'install ark' do
   base_game_dir node['ark']['install_dir']
   user node['steam']['user']
@@ -53,6 +75,7 @@ end
 
 bash 'Install ark Steamcmd' do
   user node['steam']['user']
+  group node['steam']['user']
   cwd ark_base_dir
   code <<-EOH
   mkdir -p Engine/Binaries/ThirdParty/SteamCMD/Linux
@@ -72,12 +95,35 @@ directory ark_config_dir do
   notifies :run, 'execute[chown config directory]', :immediately
 end
 
-template "#{ark_config_dir}/Game.ini" do
-  source 'Game.ini.erb'
+template gameusersettings_ini do
+  source 'ark/GameUserSettings.ini.erb'
   owner node['steam']['user']
   group node['steam']['user']
-  mode '0744'
+  mode '0400'
 end
+
+template game_ini do
+  source 'ark/Game.ini.erb'
+  owner node['steam']['user']
+  group node['steam']['user']
+  mode '0400'
+end
+
+# Todo: Mod support
+# Install all of the mods (only if ark is not running)
+# node['ark']['gameserver']['configuration']['ActiveMods'].each do |modid|
+#   execute 'install mod' do
+#     command <<-EOF
+#     python3 #{node['ark']['tools_dir']}/Ark_Mod_Downloader/Ark_Mod_Downloader.py \
+#       --workingdir #{ark_base_dir} \
+#       --modids #{modid} \
+#       --steamcmd #{node['steam']['steamcmd']['install_dir']} \
+#       --namefile
+#     EOF
+#     action :run
+#     not_if "pgrep -f ShooterGameServer"
+#   end
+# end
 
 execute 'chown config directory' do
   command <<-EOF
