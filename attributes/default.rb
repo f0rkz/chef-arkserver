@@ -26,6 +26,17 @@ default['ark']['install_dir'] = '/opt/arkserver'
 default['ark']['tools_dir'] = '/opt/arkserver/tools'
 default['ark']['force_update'] = false
 
+default['ark']['gameserver']['cluster'] = {
+  is_enabled: false,
+  ClusterID: 'arkcluster',
+  ClusterSessionName: 'Unconfigured chef-arkserver cluster :: ',
+  maps: ['TheIsland', 'ScorchedEarth_P', 'TheCenter', 'Ragnarok'],
+  ServerBaseName: 'arkserver',
+  NoTransferFromFiltering: true,
+  BaseQueryPort: 27015,
+  BaseListenPort: 7777
+}
+
 default['ark']['gameserver']['configuration'] = {
   # The map to use when running the server
   map: 'TheIsland',

@@ -26,6 +26,11 @@ package 'wget'
 # package 'python3'
 # package 'python3-pip'
 
+execute 'reload systemd' do
+  command 'systemctl daemon-reload'
+  action :nothing
+end
+
 ark_base_dir = node['ark']['install_dir'] + '/' + node['ark']['appid']
 ark_config_dir = ark_base_dir + '/ShooterGame/Saved/Config/LinuxServer'
 gameusersettings_ini = ark_config_dir + '/GameUserSettings.ini'
@@ -38,116 +43,159 @@ user node['steam']['user'] do
   action :create
 end
 
-# Create the gameserver install directory
-directory node['ark']['install_dir'] do
-  owner node['steam']['user']
-  group node['steam']['user']
-  mode '0755'
-  recursive true
-  action :create
-  notifies :install, 'steamcmd_app[install ark]', :immediately
+if node['ark']['gameserver']['cluster']['is_enabled']
+  cluster_directory = ark_base_dir + '/cluster'
+  cluster_maps = node['ark']['gameserver']['cluster']['maps']
+  query_port = node['ark']['gameserver']['cluster']['BaseQueryPort']
+  listen_port = node['ark']['gameserver']['cluster']['BaseListenPort']
+
+  directory cluster_directory do
+    owner node['steam']['user']
+    group node['steam']['user']
+    mode '0755'
+    recursive true
+    action :create
+  end
+
+  cluster_maps.each do |map_name|
+    # Create a game directory for each map_name
+    map_dir = ark_base_dir + '/' + map_name
+    ark_config_dir = map_dir + '/ShooterGame/Saved/Config/LinuxServer'
+    gameusersettings_ini = ark_config_dir + '/GameUserSettings.ini'
+    game_ini = ark_config_dir + '/Game.ini'
+
+    directory map_dir do
+      owner node['steam']['user']
+      group node['steam']['user']
+      mode '0755'
+      recursive true
+      action :create
+      notifies :install, "steamcmd_app[install ark #{map_name}]", :immediately
+    end
+
+    # Install the server for each map_name
+    steamcmd_app "install ark #{map_name}" do
+      base_game_dir map_dir
+      user node['steam']['user']
+      group node['steam']['user']
+      appid node['ark']['appid']
+      action :nothing
+    end
+
+    directory ark_config_dir do
+      owner node['steam']['user']
+      group node['steam']['user']
+      mode '0755'
+      recursive true
+      action :create
+      notifies :run, "execute[chown ark]", :immediately
+    end
+
+    template gameusersettings_ini do
+      source 'arkcluster/GameUserSettings.ini.erb'
+      owner node['steam']['user']
+      group node['steam']['user']
+      mode '0400'
+      variables({
+        SessionName: node['ark']['gameserver']['cluster']['ClusterSessionName'] + map_name
+      })
+    end
+
+    template game_ini do
+      source 'ark/Game.ini.erb'
+      owner node['steam']['user']
+      group node['steam']['user']
+      mode '0400'
+    end
+
+    template "/etc/systemd/system/ark-#{map_name}.service" do
+      source 'ark-cluster.service.erb'
+      owner 'root'
+      group 'root'
+      mode '0744'
+      variables({
+        map: map_name,
+        listen_port: listen_port,
+        query_port: query_port,
+        cluster_directory: cluster_directory
+      })
+      notifies :enable, "service[ark-#{map_name}]", :immediately
+      notifies :run, 'execute[reload systemd]', :delayed
+      notifies :start, "service[ark-#{map_name}]", :delayed
+    end
+
+    service "ark-#{map_name}" do
+      supports status: true
+      action :nothing
+    end
+
+    # Incriment the query_port and listen_port
+    query_port += 1
+    listen_port += 1
+  end
+
+else
+  # Do other things for a single server instance instead
+  # Create the gameserver install directory
+  directory node['ark']['install_dir'] do
+    owner node['steam']['user']
+    group node['steam']['user']
+    mode '0755'
+    recursive true
+    action :create
+    notifies :install, 'steamcmd_app[install ark]', :immediately
+  end
+
+  steamcmd_app 'install ark' do
+    base_game_dir node['ark']['install_dir']
+    user node['steam']['user']
+    group node['steam']['user']
+    appid node['ark']['appid']
+    action :nothing
+  end
+
+  directory ark_config_dir do
+    owner node['steam']['user']
+    group node['steam']['user']
+    mode '0755'
+    recursive true
+    action :create
+    notifies :run, 'execute[chown ark]', :immediately
+  end
+
+  template gameusersettings_ini do
+    source 'ark/GameUserSettings.ini.erb'
+    owner node['steam']['user']
+    group node['steam']['user']
+    mode '0400'
+  end
+
+  template game_ini do
+    source 'ark/Game.ini.erb'
+    owner node['steam']['user']
+    group node['steam']['user']
+    mode '0400'
+  end
+
+  template '/etc/systemd/system/ark.service' do
+    source 'ark.service.erb'
+    owner 'root'
+    group 'root'
+    mode '0744'
+    notifies :enable, 'service[ark]', :immediately
+    notifies :run, 'execute[reload systemd]', :delayed
+    notifies :start, 'service[ark]', :delayed
+  end
+
+  service 'ark' do
+    supports status: true
+    action :nothing
+  end
 end
 
-# Create the ark tools directory
-directory node['ark']['tools_dir'] do
-  owner node['steam']['user']
-  group node['steam']['user']
-  mode '0755'
-  recursive true
-  action :create
-end
-
-# Install the mod downloader tool
-# git "#{node['ark']['tools_dir']}/Ark_Mod_Downloader" do
-#   repository 'https://github.com/f0rkz/Ark_Mod_Downloader.git'
-#   action :sync
-#   user node['steam']['user']
-#   group node['steam']['user']
-# end
-
-steamcmd_app 'install ark' do
-  base_game_dir node['ark']['install_dir']
-  user node['steam']['user']
-  group node['steam']['user']
-  appid node['ark']['appid']
-  action :nothing
-end
-
-bash 'Install ark Steamcmd' do
-  user node['steam']['user']
-  group node['steam']['user']
-  cwd ark_base_dir
-  code <<-EOH
-  mkdir -p Engine/Binaries/ThirdParty/SteamCMD/Linux
-  cd Engine/Binaries/ThirdParty/SteamCMD/Linux/
-  wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
-  tar -xf steamcmd_linux.tar.gz
-  EOH
-  not_if { ::File.directory?("#{node['ark']['install_dir']}/Engine/Binaries/ThirdParty/SteamCMD/Linux") }
-end
-
-directory ark_config_dir do
-  owner node['steam']['user']
-  group node['steam']['user']
-  mode '0755'
-  recursive true
-  action :create
-  notifies :run, 'execute[chown config directory]', :immediately
-end
-
-template gameusersettings_ini do
-  source 'ark/GameUserSettings.ini.erb'
-  owner node['steam']['user']
-  group node['steam']['user']
-  mode '0400'
-end
-
-template game_ini do
-  source 'ark/Game.ini.erb'
-  owner node['steam']['user']
-  group node['steam']['user']
-  mode '0400'
-end
-
-# Todo: Mod support
-# Install all of the mods (only if ark is not running)
-# node['ark']['gameserver']['configuration']['ActiveMods'].each do |modid|
-#   execute 'install mod' do
-#     command <<-EOF
-#     python3 #{node['ark']['tools_dir']}/Ark_Mod_Downloader/Ark_Mod_Downloader.py \
-#       --workingdir #{ark_base_dir} \
-#       --modids #{modid} \
-#       --steamcmd #{node['steam']['steamcmd']['install_dir']} \
-#       --namefile
-#     EOF
-#     action :run
-#     not_if "pgrep -f ShooterGameServer"
-#   end
-# end
-
-execute 'chown config directory' do
+execute 'chown ark' do
   command <<-EOF
   chown -R #{node['steam']['user']}:#{node['steam']['user']} #{ark_base_dir}
   EOF
-  action :nothing
-end
-
-template '/etc/systemd/system/ark.service' do
-  source 'ark.service.erb'
-  owner 'root'
-  group 'root'
-  mode '0744'
-  notifies :enable, 'service[ark]', :immediately
-  notifies :run, 'execute[reload systemd]', :delayed
-  notifies :start, 'service[ark]', :delayed
-end
-
-execute 'reload systemd' do
-  command 'systemctl daemon-reload'
-  action :nothing
-end
-
-service 'ark' do
-  supports status: true
   action :nothing
 end
